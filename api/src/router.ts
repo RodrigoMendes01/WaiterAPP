@@ -1,40 +1,27 @@
 import { Router} from 'express';
-import { listCategories } from './useCases/categories/listCategories';
-import { createCategories } from './useCases/categories/createCategory';
 import { listProducts } from './useCases/products/listProducts';
 import { createProduct } from './useCases/products/createProduct';
-import { listProductsByCategory } from './useCases/categories/listProductsByCategory';
 import { upload } from './utils/multer';
-import { listOrders } from './useCases/orders/listOrders';
-import { createOrder } from './useCases/orders/createOrder';
-import { changeOrderStatus } from './useCases/orders/changeOrderStatus';
-import { cancelOrder } from './useCases/orders/cancelOrder';
+
+import CategorieController from './app/controllers/CategorieController';
+import OrderController from './app/controllers/OrderController';
 
 export const router = Router();
 
-// LIST CATEGORIES
-router.get('/categories', listCategories);
+//CATEGORIES
+router.get('/categories', CategorieController.index);
+router.post('/categories', CategorieController.store);
+router.patch('/categories', CategorieController.update);
+router.delete('/categories/:categorieId', CategorieController.delete);
 
-// CREATE CATEGORY
-router.post('/categories', createCategories);
-
-// LIST PRODUCTS
+//PRODUCTS
 router.get('/products', listProducts);
-
-// CREATE PRODUCT
 router.post('/products', upload.single('image'),  createProduct);
+router.get('/categories/:categoryId/products', CategorieController.showProductsByCategory);
 
-// GET PRODUCT BY CATEGORY
-router.get('/categories/:categoryId/products', listProductsByCategory);
-
-// LIST ORDERS
-router.get('/orders', listOrders);
-
-// CREATE ORDER
-router.post('/orders', createOrder);
-
-// CHANGE ORDER STATUS
-router.patch('/orders/:orderId', changeOrderStatus);
-
-// DELETE OR CANCEL ORDER
-router.delete('/orders/:orderId', cancelOrder);
+//ORDERS
+router.get('/orders', OrderController.index);
+router.get('/orders/:orderId', OrderController.show);
+router.post('/orders', OrderController.store);
+router.patch('/orders/:orderId', OrderController.update);
+router.delete('/orders/:orderId', OrderController.delete);
