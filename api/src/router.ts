@@ -1,9 +1,16 @@
 import { Router} from 'express';
 import { listCategories } from './useCases/categories/listCategories';
 import { createCategories } from './useCases/categories/createCategory';
+import { listProducts } from './useCases/products/listProducts';
+import { createProduct } from './useCases/products/createProduct';
+import { listProductsByCategory } from './useCases/categories/listProductsByCategory';
+import { upload } from './utils/multer';
+import { listOrders } from './useCases/orders/listOrders';
+import { createOrder } from './useCases/orders/createOrder';
+import { changeOrderStatus } from './useCases/orders/changeOrderStatus';
+import { cancelOrder } from './useCases/orders/cancelOrder';
 
 export const router = Router();
-
 
 // LIST CATEGORIES
 router.get('/categories', listCategories);
@@ -12,36 +19,22 @@ router.get('/categories', listCategories);
 router.post('/categories', createCategories);
 
 // LIST PRODUCTS
-router.get('/products', (request, response) => {
-  response.send('OK');
-});
+router.get('/products', listProducts);
 
 // CREATE PRODUCT
-router.post('/products', (request, response) => {
-  response.send('OK');
-});
+router.post('/products', upload.single('image'),  createProduct);
 
 // GET PRODUCT BY CATEGORY
-router.post('/categories/:categoryId/products', (request, response) => {
-  response.send('OK');
-});
+router.get('/categories/:categoryId/products', listProductsByCategory);
 
 // LIST ORDERS
-router.get('/orders', (request, response) => {
-  response.send('OK');
-});
+router.get('/orders', listOrders);
 
 // CREATE ORDER
-router.post('/orders', (request, response) => {
-  response.send('OK');
-});
+router.post('/orders', createOrder);
 
 // CHANGE ORDER STATUS
-router.patch('/orders/:orderId', (request, response) => {
-  response.send('OK');
-});
+router.patch('/orders/:orderId', changeOrderStatus);
 
 // DELETE OR CANCEL ORDER
-router.delete('/orders/:orderId', (request, response) => {
-  response.send('OK');
-});
+router.delete('/orders/:orderId', cancelOrder);
