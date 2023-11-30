@@ -12,6 +12,11 @@ export class OrderController {
     const { orderId } = request.params;
     const order = await OrderRepository.findById(Object(orderId));
 
+    if (!order) (
+      response.status(404).json({
+        error: 'Nenhuma ordem de serviço encontrada!'})
+    );
+
     response.json(order);
   }
 

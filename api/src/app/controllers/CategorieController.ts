@@ -23,6 +23,11 @@ export class CategorieController {
     const { categorieId } = request.params;
     const categorie = await CategorieRepository.findById(Object(categorieId));
 
+    if (!categorie) (
+      response.status(404).json({
+        error: 'Nenhuma categoria encontrada!'})
+    );
+
     response.json(categorie);
   }
   async store(request: Request, response: Response) {
