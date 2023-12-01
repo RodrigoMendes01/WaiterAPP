@@ -1,8 +1,18 @@
+import Header from './components/Header';
+import { GlobalStyles } from './styles/GlobalStyles';
+import { ThemeProvider } from 'styled-components';
+import defaultThemes from './styles/themes/default';
+import Order from './components/Orders';
+
 function App() {
   return (
-    <div>
-      <h1>olá teste</h1>
-    </div>
+    <>
+      <ThemeProvider theme={defaultThemes}>
+        <GlobalStyles/>
+        <Header/>
+        <Order/>
+      </ThemeProvider>
+    </>
   );
 }
 
