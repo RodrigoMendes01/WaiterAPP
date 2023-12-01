@@ -7,14 +7,7 @@ function Order() {
       <Board
         icon="🔴"
         title="Fila de espera"
-      />
-      <Board
-        icon="🟡"
-        title="Em preparo"
-      />
-      <Board
-        icon="🟢"
-        title="Pronto"
+        orders={[]}
       />
     </Container>
   );
