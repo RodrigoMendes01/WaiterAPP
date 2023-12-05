@@ -18,11 +18,17 @@ export const MenuContainer = styled.View`
   flex: 1;
 `;
 
-export const Footer = styled.SafeAreaView`
-`;
-
-export const FootContainer = styled.View`
+export const Footer = styled.View`
   min-height: 110px;
   background: #FFF;
   padding: 16px 24px;
+`;
+
+export const FootContainer = styled.SafeAreaView`
+`;
+
+export const CenteredContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 `;
