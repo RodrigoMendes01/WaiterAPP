@@ -7,13 +7,13 @@ export const ProductContainer = styled.TouchableOpacity`
 
 export const ProductDetails = styled.View`
   margin-left: 16px;
+  flex: 1;
 `;
 
 export const ProductImage = styled.Image`
   width: 120px;
   height: 96px;
   border-radius: 8px;
-  flex: 1;
 `;
 
 export const Separator = styled.View`

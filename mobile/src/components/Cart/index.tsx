@@ -19,23 +19,36 @@ import { MinusCircle } from '../../assets/Icons/MinusCircle';
 import Button from '../Button';
 import { Product } from '../../types/Product';
 import OrderConfirmedModal from '../OrderConfirmedModal';
+import api from '../../utils/api';
 
 interface CartProps {
   cartItems: CartItem[]
   onAdd: (product: Product) => void
   onRemove: (product: Product) => void
   onConfirmOrder: () => void
+  selectedTable: string
 }
 
-function Cart ({ cartItems, onAdd, onRemove, onConfirmOrder }: CartProps) {
+function Cart ({ cartItems, onAdd, onRemove, onConfirmOrder, selectedTable }: CartProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isLoadin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const total = cartItems.reduce((acc, cartItem) => {
     return acc + cartItem.quantity * cartItem.product.price;
   }, 0);
 
-  function handleConfirmOrder () {
+  async function handleConfirmOrder () {
+    setIsLoading(true);
+
+    await api.post('/orders', {
+      table: selectedTable,
+      products: cartItems.map((cartItem) => ({
+        product: cartItem.product._id,
+        quantity: cartItem.quantity
+      }))
+    });
+
+    setIsLoading(false);
     setIsModalVisible(true);
   }
 
@@ -63,7 +76,7 @@ function Cart ({ cartItems, onAdd, onRemove, onConfirmOrder }: CartProps) {
 
                 <Image
                   source={{
-                    uri: `http://localhost:3001/uploads/${cartItem.product.imagePath}`
+                    uri: `${process.env.EXPO_PUBLIC_API_URL}/uploads/${cartItem.product.imagePath}`
                   }}
                 />
 
@@ -118,7 +131,7 @@ function Cart ({ cartItems, onAdd, onRemove, onConfirmOrder }: CartProps) {
           label="Confirmar pedido"
           onPress={handleConfirmOrder}
           disabled={cartItems.length === 0}
-          loading={isLoadin}
+          loading={isLoading}
         />
       </Summary>
     </>

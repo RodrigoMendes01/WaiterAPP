@@ -32,7 +32,7 @@ function ProductModal ({ visible, onClose,  product, onAddToCart }: ProductModal
     >
       <Image
         source={{
-          uri: `http://localhost:3001/uploads/${product.imagePath}`
+          uri: `${process.env.EXPO_PUBLIC_API_URL}/uploads/${product.imagePath}`
         }}
       >
         <CloseButton onPress={onClose}>
