@@ -3,16 +3,19 @@ import { Order } from '../../types/Order';
 import { Container, OrderContainer } from './styles';
 
 import OrderModal from '../OrderModal';
+import api from '../../utils/api';
 
 interface BoardProps {
   icon: string;
   title: string
   orders: Order[]
+  onCancelOrder: (orderId: string) => void
 }
 
-function Board({ icon, title, orders }: BoardProps) {
+function Board({ icon, title, orders, onCancelOrder }: BoardProps) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<null | Order>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleOpenModal (order: Order) {
     setModalVisible(true);
@@ -24,12 +27,24 @@ function Board({ icon, title, orders }: BoardProps) {
     setSelectedOrder(null);
   }
 
+  async function handleCancelOrder () {
+    setIsLoading(true);
+
+    await api.delete(`/orders/${selectedOrder?._id}`);
+
+    onCancelOrder(selectedOrder!._id);
+    setIsLoading(false);
+    setModalVisible(false);
+  }
+
   return (
     <>
       <OrderModal
         visible={isModalVisible}
         order={selectedOrder}
         onClose={handleCloseModal}
+        onCancelOrder={handleCancelOrder}
+        isLoading={isLoading}
       />
       <Container>
         <header>
@@ -40,7 +55,7 @@ function Board({ icon, title, orders }: BoardProps) {
         {orders.length > 0 && (
           <OrderContainer>
             {
-              orders.map((order) => {
+              orders.map((order) => (
                 <button
                   type='button'
                   onClick={() => handleOpenModal(order)}
@@ -48,8 +63,8 @@ function Board({ icon, title, orders }: BoardProps) {
                 >
                   <strong>Mesa {order.table}</strong>
                   <span>{order.products.length} itens</span>
-                </button>;
-              })
+                </button>
+              ))
             }
           </OrderContainer>
         )}

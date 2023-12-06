@@ -7,9 +7,11 @@ interface OrderModalProps {
   visible: boolean
   order: Order | null
   onClose: () => void
+  onCancelOrder: () => Promise<void>
+  isLoading: boolean
 }
 
-function OrderModal ({ visible, order, onClose }: OrderModalProps) {
+function OrderModal ({ visible, order, onClose, onCancelOrder, isLoading }: OrderModalProps) {
   if (!visible || !order) {
     return null;
   }
@@ -20,6 +22,7 @@ function OrderModal ({ visible, order, onClose }: OrderModalProps) {
 
   return (
     <Overlay>
+
       <ModalBody>
         <header>
           <strong>Mesa 2</strong>
@@ -46,8 +49,8 @@ function OrderModal ({ visible, order, onClose }: OrderModalProps) {
           <strong>Itens</strong>
 
           <Container>
-            {order.products.map((_id, product, quantity) => {
-              <div className="item">
+            {order.products.map(({_id, product, quantity}) => (
+              <div className="item" key={_id}>
                 <img
                   src={`http://localhost:3001/uploads/${product.imagePath}`}
                   alt={product.name}
@@ -60,8 +63,8 @@ function OrderModal ({ visible, order, onClose }: OrderModalProps) {
                   <strong>{product.name}</strong>
                   <span>{formatCurrency(product.price)}</span>
                 </div>
-              </div>;
-            })}
+              </div>
+            ))}
           </Container>
           <div className="total">
             <span>Total</span>
@@ -70,13 +73,25 @@ function OrderModal ({ visible, order, onClose }: OrderModalProps) {
         </OrderDetails>
 
         <Actions>
-          <button type="button" className='primary'>
+
+          <button
+            type="button"
+            className='primary'
+            disabled={isLoading}
+          >
             <span>🟡</span>
             <span>Inicar produção</span>
           </button>
-          <button type="button" className='secondary'>
+
+          <button
+            type="button"
+            className='secondary'
+            onClick={onCancelOrder}
+            disabled={isLoading}
+          >
             Cancelar
           </button>
+
         </Actions>
       </ModalBody>
 

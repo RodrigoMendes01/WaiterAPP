@@ -2,7 +2,7 @@ import Header from './components/Header';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { ThemeProvider } from 'styled-components';
 import defaultThemes from './styles/themes/default';
-import Order from './components/Orders';
+import Orders from './components/Orders';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <ThemeProvider theme={defaultThemes}>
         <GlobalStyles/>
         <Header/>
-        <Order/>
+        <Orders/>
       </ThemeProvider>
     </>
   );

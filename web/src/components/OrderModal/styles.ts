@@ -89,7 +89,7 @@ export const Container = styled.div`
     img {
       border-radius: 6px;
       width: 80px;
-      height: 36px;
+      height: 50px;
     }
 
     .quantity {
@@ -101,16 +101,16 @@ export const Container = styled.div`
 
     }
 
-    .product-detail {
+    .product-details {
       margin-left: 4px;
 
       strong {
-        display: block;
         margin-bottom: 4px;
+        display: block;
       }
 
       span {
-        font-size: 14;
+        font-size: 14px;
         color: #666;
       }
     }
@@ -121,6 +121,11 @@ export const Actions = styled.footer`
   display: flex;
   flex-direction: column;
   margin-top: 32px;
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 
   .primary {
     background: #333333;
@@ -135,7 +140,7 @@ export const Actions = styled.footer`
     gap: 8px;
   }
 
-  .secodary {
+  .secondary {
     padding: 14px 24px;
     color: ${({ theme }) => theme.primary.main};
     font-weight: bold;
