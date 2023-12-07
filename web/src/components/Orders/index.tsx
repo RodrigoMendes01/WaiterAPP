@@ -3,9 +3,20 @@ import Board from '../Board';
 import { Container } from './styles';
 import { Order } from '../../types/Order';
 import api from '../../utils/api';
+import socketIo from 'socket.io-client';
 
 function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
+
+  useEffect(() => {
+    const io = socketIo(`${import.meta.env.VITE_URL}`, {
+      transports: ['websocket']
+    });
+
+    io.on('orders@new', (order) => {
+      setOrders(prevState => prevState.concat(order));
+    });
+  }, []);
 
   useEffect(() => {
     api.get('/orders')
@@ -45,21 +56,21 @@ function Orders() {
         title="Fila de espera"
         orders={waiting}
         onCancelOrder={handleCancelOrder}
-        onChangeOrderStatus={handleCancelOrder}
+        onChangeOrderStatus={handleOrderStatusChange}
       />
       <Board
         icon="🟡"
         title="Em preparação"
         orders={inProduction}
         onCancelOrder={handleCancelOrder}
-        onChangeOrderStatus={handleCancelOrder}
+        onChangeOrderStatus={handleOrderStatusChange}
       />
       <Board
         icon="🟢"
         title="Finalizado"
         orders={done}
         onCancelOrder={handleCancelOrder}
-        onChangeOrderStatus={handleCancelOrder}
+        onChangeOrderStatus={handleOrderStatusChange}
       />
     </Container>
   );

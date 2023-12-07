@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import OrderRepository from '../repositories/OrderRepository';
+import { io } from '../..';
 
 export class OrderController {
   async index(request: Request, response: Response) {
@@ -29,6 +30,9 @@ export class OrderController {
         products
       });
 
+      const orderDetail = await order.populate('products.product');
+
+      io.emit('orders@new', orderDetail);
       response.status(201).json(order);
 
     } catch (error) {
