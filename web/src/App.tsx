@@ -4,6 +4,9 @@ import { ThemeProvider } from 'styled-components';
 import defaultThemes from './styles/themes/default';
 import Orders from './components/Orders';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
   return (
     <>
@@ -11,6 +14,7 @@ function App() {
         <GlobalStyles/>
         <Header/>
         <Orders/>
+        <ToastContainer position='bottom-center'/>
       </ThemeProvider>
     </>
   );

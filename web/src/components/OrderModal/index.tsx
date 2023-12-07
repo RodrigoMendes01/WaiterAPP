@@ -9,9 +9,17 @@ interface OrderModalProps {
   onClose: () => void
   onCancelOrder: () => Promise<void>
   isLoading: boolean
+  onChangeOrderStatus: () => Promise<void>
 }
 
-function OrderModal ({ visible, order, onClose, onCancelOrder, isLoading }: OrderModalProps) {
+function OrderModal ({
+  visible,
+  order,
+  onClose,
+  onCancelOrder,
+  isLoading,
+  onChangeOrderStatus
+}: OrderModalProps) {
   if (!visible || !order) {
     return null;
   }
@@ -52,7 +60,7 @@ function OrderModal ({ visible, order, onClose, onCancelOrder, isLoading }: Orde
             {order.products.map(({_id, product, quantity}) => (
               <div className="item" key={_id}>
                 <img
-                  src={`http://localhost:3001/uploads/${product.imagePath}`}
+                  src={`${import.meta.env.VITE_URL}/uploads/${product.imagePath}`}
                   alt={product.name}
                 />
                 <span className="quantity">
@@ -74,14 +82,23 @@ function OrderModal ({ visible, order, onClose, onCancelOrder, isLoading }: Orde
 
         <Actions>
 
-          <button
-            type="button"
-            className='primary'
-            disabled={isLoading}
-          >
-            <span>🟡</span>
-            <span>Inicar produção</span>
-          </button>
+          {order.status !== 'DONE' && (
+            <button
+              type="button"
+              className='primary'
+              disabled={isLoading}
+              onClick={onChangeOrderStatus}
+            >
+              <span>
+                {order.status === 'WAITING' && '🔴'}
+                {order.status === 'IN_PRODUCTION' && '🟡'}
+              </span>
+              <span>
+                {order.status === 'WAITING' && 'Fila de espera'}
+                {order.status === 'IN_PRODUCTION' && 'Concluir Pedido'}
+              </span>
+            </button>
+          )}
 
           <button
             type="button"
